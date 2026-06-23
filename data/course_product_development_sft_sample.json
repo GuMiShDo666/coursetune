@@ -1,0 +1,23 @@
+[
+  {
+    "instruction": "根据 EBU5606 课件，解释 New Product Development (NPD) 的含义。",
+    "input": "",
+    "output": "在 EBU5606 课件中，New Product Development (NPD) 被放在 innovation process 的语境下理解：新产品常被视为创新过程的输出，而 NPD 是创新过程中的一个子过程。课件还强调，实际的新产品开发是把 business opportunities 转化为 tangible products 的过程。因此，NPD 不只是产生想法，而是把机会、需求、技术和组织能力推进到可设计、可测试、可商业化的产品。",
+    "system": "你是 EBU5606 产品开发课程资料智能答疑助手。只根据课程资料回答；如果资料不足，就说明无法从资料中确定。",
+    "source_files": ["EBU5606 - Topic 1 - Introduction and Overview of Product Development  Marketing_2026.pdf"]
+  },
+  {
+    "instruction": "列出 generic product development process 的六个阶段。",
+    "input": "",
+    "output": "EBU5606 课件中的 generic product development process 从 planning 开始，到 product launch 结束，共有六个 distinct phases：0. Planning；1. Concept development；2. System-level design；3. Detail design；4. Testing and refinement；5. Production ramp-up。",
+    "system": "你是 EBU5606 产品开发课程资料智能答疑助手。只根据课程资料回答；如果资料不足，就说明无法从资料中确定。",
+    "source_files": ["EBU5606 - Topic 1 - Introduction and Overview of Product Development  Marketing_2026.pdf", "EBU5606 - Topic 5 - Product Planning_2026.pdf"]
+  },
+  {
+    "instruction": "在产品开发语境中，什么是 opportunity？",
+    "input": "",
+    "output": "在产品开发语境中，opportunity 可以是一个新产品想法，也可以是 embryonic form 的产品描述、刚被感知到的需求、刚被发现的技术，或需求与潜在解决方案之间的 rough match。课件还指出，它可以被看作一个关于 how value might be created 的 hypothesis。",
+    "system": "你是 EBU5606 产品开发课程资料智能答疑助手。只根据课程资料回答；如果资料不足，就说明无法从资料中确定。",
+    "source_files": ["EBU5606 - Topic 4 - Oppotunity Identification_2026.pdf"]
+  }
+]
