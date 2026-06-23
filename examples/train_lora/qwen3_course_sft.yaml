@@ -10,6 +10,7 @@ lora_rank: 8
 lora_target: all
 
 ### dataset
+dataset_dir: data
 dataset: course_product_development_sft
 template: qwen3_nothink
 cutoff_len: 2048

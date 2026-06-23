@@ -6,9 +6,9 @@ English · [中文](README_zh.md)
 
 <h1 align="center">CourseTune Product Development</h1>
 <p align="center">
-  <strong>A Qwen3 LoRA/DPO fine-tuning project for the EBU5606 Product Development course.</strong>
+  <strong>A lightweight Qwen3 LoRA/DPO fine-tuning project for the EBU5606 Product Development course.</strong>
   <br />
-  <em>LLaMA-Factory · Course PDF extraction · SFT · DPO · Gradio/WebUI-ready inference</em>
+  <em>Course PDF extraction · SFT dataset construction · DPO preference alignment · LLaMA-Factory configs</em>
 </p>
 
 <p align="center">
@@ -18,30 +18,27 @@ English · [中文](README_zh.md)
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python_3-3776AB?style=flat&logo=python&logoColor=white" alt="Python 3" />
-  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat&logo=pytorch&logoColor=white" alt="PyTorch" />
-  <img src="https://img.shields.io/badge/Hugging_Face-FFD21E?style=flat&logo=huggingface&logoColor=black" alt="Hugging Face" />
-  <img src="https://img.shields.io/badge/Gradio-FF7C00?style=flat&logo=gradio&logoColor=white" alt="Gradio" />
+  <img src="https://img.shields.io/badge/LLaMA--Factory-111827?style=flat" alt="LLaMA-Factory" />
+  <img src="https://img.shields.io/badge/Qwen3-2563EB?style=flat" alt="Qwen3" />
+  <img src="https://img.shields.io/badge/LoRA_DPO-059669?style=flat" alt="LoRA DPO" />
 </p>
 
 ## Features
 
 | Feature | Description |
 |---|---|
-| Course-specific data source | Uses the EBU5606 Product Development lecture PDFs from `/Users/gumishdo/Desktop/大三下/产开`. |
-| Source extraction | Converts Topic lecture PDFs into source chunks for dataset construction. |
-| SFT workflow | Registers a product-development SFT dataset in LLaMA-Factory. |
-| DPO workflow | Registers a preference dataset for answer-style alignment. |
-| Qwen3 LoRA configs | Adds SFT, DPO, inference, and LoRA merge YAML files. |
-| Upstream attribution | Keeps the original LLaMA-Factory documentation as `UPSTREAM_README.md` and `UPSTREAM_README_zh.md`. |
+| Course-focused dataset | Builds training data from EBU5606 Product Development lecture PDFs. |
+| Source-bound extraction | Converts local PDF/PPTX/TXT/Markdown files into JSONL chunks and annotation prompts. |
+| SFT and DPO samples | Includes reviewed sample data for supervised fine-tuning and preference alignment. |
+| Training configs | Provides Qwen3 LoRA SFT, DPO, inference, and merge YAML files for LLaMA-Factory. |
+| Public-safe repository | Generated chunks and annotation prompts are ignored because they may contain course material text. |
 
 ## Quick Start
 
 ### Install
 
 ```bash
-cd LLaMA-Factory
-pip install -e .
-pip install -r requirements/course_tune.txt
+pip install -r requirements.txt
 ```
 
 ### Build Product Development Prompts
@@ -79,7 +76,7 @@ python scripts/course_tune_build_data.py \
   --out data/course_product_development_chunks.jsonl
 ```
 
-The current local extraction produced `948` source chunks, `948` SFT annotation prompts, and `948` DPO annotation prompts. These generated files are ignored by Git because they may contain course material text.
+The local extraction generated `948` source chunks, `948` SFT annotation prompts, and `948` DPO annotation prompts. These files are ignored by Git.
 
 ### Generate DPO Annotation Prompts
 
@@ -102,58 +99,49 @@ llamafactory-cli export examples/merge_lora/qwen3_course_lora.yaml
 ```mermaid
 graph TD
     A[EBU5606 Lecture PDFs] --> B[course_tune_build_data.py]
-    B --> C[Source Chunks<br/>JSONL]
+    B --> C[Source Chunks JSONL]
     C --> D[SFT Annotation Prompts]
     C --> E[DPO Annotation Prompts]
-    D --> F[LLaMA-Factory SFT]
-    E --> G[LLaMA-Factory DPO]
-    F --> H[Course LoRA Adapter]
+    D --> F[SFT Dataset]
+    E --> G[DPO Dataset]
+    F --> H[LLaMA-Factory Training]
     G --> H
-    H --> I[Chat / Export]
+    H --> I[Course LoRA Adapter]
+    I --> J[Chat / Export]
 ```
-
-## Configuration
-
-| File | Purpose |
-|---|---|
-| `data/dataset_info.json` | Registers `course_product_development_sft` and `course_product_development_dpo`. |
-| `examples/train_lora/qwen3_course_sft.yaml` | Qwen3 LoRA SFT training configuration. |
-| `examples/train_lora/qwen3_course_dpo.yaml` | Qwen3 LoRA DPO training configuration. |
-| `examples/inference/qwen3_course_lora.yaml` | Chat configuration for the course LoRA adapter. |
-| `examples/merge_lora/qwen3_course_lora.yaml` | LoRA merge and export configuration. |
-| `requirements/course_tune.txt` | Additional dependencies for PDF/PPTX extraction. |
 
 ## Project Structure
 
 ```text
 data/
-├── course_product_development_sft_sample.json     # Reviewed SFT sample
-├── course_product_development_dpo_sample.json     # Reviewed DPO sample
-└── dataset_info.json                              # LLaMA-Factory dataset registry
+├── course_product_development_sft_sample.json
+├── course_product_development_dpo_sample.json
+└── dataset_info.json
 examples/
-├── train_lora/                                    # SFT and DPO training configs
-├── inference/                                     # Chat config
-└── merge_lora/                                    # Export config
+├── train_lora/
+│   ├── qwen3_course_sft.yaml
+│   └── qwen3_course_dpo.yaml
+├── inference/
+│   └── qwen3_course_lora.yaml
+└── merge_lora/
+    └── qwen3_course_lora.yaml
 scripts/
-└── course_tune_build_data.py                      # Course material extraction helper
-COURSE_TUNE_ZH.md                                  # Chinese project workflow notes
-UPSTREAM_README.md                                 # Original LLaMA-Factory README
-UPSTREAM_README_zh.md                              # Original LLaMA-Factory Chinese README
+└── course_tune_build_data.py
+requirements.txt
 ```
 
 ## Tech Stack
 
 | Layer | Technology | Purpose |
 |---|---|---|
-| Fine-tuning | LLaMA-Factory | SFT, DPO, LoRA, export, and chat workflows. |
+| Fine-tuning runtime | LLaMA-Factory | Runs SFT, DPO, LoRA merge, and chat workflows. |
 | Base model | Qwen3 Instruct | Chinese-capable instruction model for course assistant tuning. |
-| Data extraction | `pypdf`, `python-pptx` | PDF/PPTX lecture extraction. |
-| Training backend | PyTorch, Transformers, PEFT, TRL | Model loading, adapter training, and preference optimization. |
-| Interface | LLaMA Board / Gradio | Visual training and model interaction through LLaMA-Factory. |
+| Data extraction | `pypdf`, `python-pptx` | Extracts course PDF/PPTX content. |
+| Training method | LoRA, DPO | Keeps training efficient and adds preference alignment. |
 
 ## Upstream
 
-This project is adapted from [hiyouga/LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory). The original README files are preserved as `UPSTREAM_README.md` and `UPSTREAM_README_zh.md`.
+This project uses [hiyouga/LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory) as an external fine-tuning runtime.
 
 ## License
 

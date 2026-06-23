@@ -13,6 +13,7 @@ pref_beta: 0.1
 pref_loss: sigmoid
 
 ### dataset
+dataset_dir: data
 dataset: course_product_development_dpo
 template: qwen3_nothink
 cutoff_len: 2048
