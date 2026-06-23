@@ -10,12 +10,12 @@ from pathlib import Path
 from urllib import error, request
 
 
-DEFAULT_SYSTEM = "你是 EBU5606 产品开发课程资料智能答疑助手。只根据课程资料回答；如果资料不足，就说明无法从资料中确定。"
+DEFAULT_SYSTEM = "你是课程资料智能答疑助手。只根据用户提供的课程资料回答；如果资料不足，就说明无法从资料中确定。"
 
 
 class CourseTuneHandler(SimpleHTTPRequestHandler):
     api_url = "http://127.0.0.1:8000/v1/chat/completions"
-    model_name = "coursetune-product-development"
+    model_name = "coursetune"
 
     def do_POST(self) -> None:
         if self.path != "/api/chat":
