@@ -23,3 +23,5 @@ predictions_score.json
 data/course_product_development_chunks.jsonl
 data/course_product_development_sft_prompts.jsonl
 data/course_product_development_dpo_prompts.jsonl
+data/course_product_development_sft.json
+data/course_product_development_dpo.json

@@ -19,5 +19,19 @@
     "output": "在产品开发语境中，opportunity 可以是一个新产品想法，也可以是 embryonic form 的产品描述、刚被感知到的需求、刚被发现的技术，或需求与潜在解决方案之间的 rough match。课件还指出，它可以被看作一个关于 how value might be created 的 hypothesis。",
     "system": "你是 EBU5606 产品开发课程资料智能答疑助手。只根据课程资料回答；如果资料不足，就说明无法从资料中确定。",
     "source_files": ["EBU5606 - Topic 4 - Oppotunity Identification_2026.pdf"]
+  },
+  {
+    "instruction": "说明 opportunity identification 中 Real-Win-Worth-it 方法关注的三个问题。",
+    "input": "",
+    "output": "Real-Win-Worth-it 用来选择 exceptional opportunities。课件把它概括为三个问题：第一，Is the opportunity real? 即是否存在真实需求、顾客是否会买、产品是否可行；第二，Can you win with this opportunity? 即是否具备可持续竞争优势、合适时机、品牌和资源匹配；第三，Is the opportunity worth it financially? 即该机会在财务上是否值得投入。",
+    "system": "你是 EBU5606 产品开发课程资料智能答疑助手。只根据课程资料回答；如果资料不足，就说明无法从资料中确定。",
+    "source_files": ["EBU5606 - Topic 4 - Oppotunity Identification_2026.pdf"]
+  },
+  {
+    "instruction": "请比较 concept screening 和 concept scoring。",
+    "input": "",
+    "output": "在 EBU5606 课件中，concept screening 和 concept scoring 都用于筛选产品概念，但精度不同。concept screening 通常是较早期、较粗略的方法，常用 reference concept 和 selection criteria 对候选概念进行 +、0、- 判断，用来快速淘汰明显较弱的方案。concept scoring 更定量，通常给 selection criteria 设置权重，再给各概念打分并计算 weighted score，用于在更少、更成熟的候选概念之间做更精细的选择。",
+    "system": "你是 EBU5606 产品开发课程资料智能答疑助手。只根据课程资料回答；如果资料不足，就说明无法从资料中确定。",
+    "source_files": ["EBU5606 - Topic 7 - Concept Development_2026.pdf"]
   }
 ]
