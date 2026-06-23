@@ -20,8 +20,8 @@ generated_predictions.jsonl
 predictions_score.json
 
 # CourseTune generated local data. These files may contain extracted course text.
-data/course_product_development_chunks.jsonl
-data/course_product_development_sft_prompts.jsonl
-data/course_product_development_dpo_prompts.jsonl
-data/course_product_development_sft.json
-data/course_product_development_dpo.json
+data/*_chunks.jsonl
+data/*_sft_prompts.jsonl
+data/*_dpo_prompts.jsonl
+data/*_sft.json
+data/*_dpo.json

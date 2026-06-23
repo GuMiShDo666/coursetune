@@ -1,6 +1,6 @@
 {
-  "course_product_development_sft": {
-    "file_name": "course_product_development_sft.json",
+  "course_sft": {
+    "file_name": "course_sft.json",
     "columns": {
       "prompt": "instruction",
       "query": "input",
@@ -8,8 +8,8 @@
       "system": "system"
     }
   },
-  "course_product_development_dpo": {
-    "file_name": "course_product_development_dpo.json",
+  "course_dpo": {
+    "file_name": "course_dpo.json",
     "ranking": true,
     "columns": {
       "prompt": "instruction",

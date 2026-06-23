@@ -4,11 +4,11 @@
 
 </p>
 
-<h1 align="center">CourseTune Product Development</h1>
+<h1 align="center">CourseTune</h1>
 <p align="center">
-  <strong>面向 EBU5606 产品开发课程的轻量级 Qwen3 LoRA/DPO 微调项目。</strong>
+  <strong>把任意课程资料转换成可训练数据，并用 Qwen3 + LoRA 微调一个课程问答助手。</strong>
   <br />
-  <em>课程 PDF 抽取 · SFT 数据构建 · LoRA 微调 · 中文测试页面</em>
+  <em>课程资料抽取 · SFT/DPO 数据构建 · LoRA 微调 · 中文测试页面</em>
 </p>
 
 <p align="center">
@@ -27,12 +27,12 @@
 
 | 功能 | 说明 |
 |---|---|
-| 课程专用数据集 | 从 EBU5606 产品开发课件 PDF 构建训练数据。 |
-| 源资料抽取 | 将本地 PDF/PPTX/TXT/Markdown 转成 JSONL 文本块和标注提示词。 |
-| SFT 与 DPO 样例 | 提供已整理的监督微调样例和偏好对齐样例。 |
-| 训练配置 | 提供 Qwen3 LoRA SFT、DPO、推理和合并配置。 |
+| 自定义课程资料 | `--source` 可以填写你自己的 PDF、PPTX、TXT、Markdown 文件或文件夹路径。 |
+| 资料抽取 | 将课程资料抽取成 JSONL 文本块，保留来源文件和页码/幻灯片位置。 |
+| SFT 与 DPO 数据 | 支持直接生成训练数据，也支持生成标注提示词后人工校验。 |
+| LoRA 训练配置 | 提供 Qwen3 LoRA SFT、DPO、推理和合并配置。 |
 | 中文测试页面 | 提供可连接本地 OpenAI 兼容 API 的课程问答前端。 |
-| 公开仓库安全 | 生成的 chunks 和 prompts 可能包含课程原文，因此默认不提交。 |
+| 公开仓库安全 | 生成的课程原文、训练集和模型权重默认不提交。 |
 
 ## 快速开始
 
@@ -42,23 +42,33 @@
 pip install -r requirements.txt
 ```
 
-### 构建产品开发 SFT 训练集
+### 构建 SFT 训练集
+
+把 `--source` 后面的路径替换成你的课程资料路径，可以是一个文件，也可以是一个文件夹。
 
 ```bash
 python scripts/course_tune_build_data.py \
-  --source "/Users/gumishdo/Desktop/大三下/产开" \
-  --name-regex "^(EBU5606 - Topic|EBU5606_Topic 11|Product Development)" \
+  --source "/path/to/your/course/materials" \
   --mode sft_dataset \
-  --seed-json data/course_product_development_sft_sample.json \
+  --seed-json data/course_sft_sample.json \
   --seed-repeat 20 \
-  --out data/course_product_development_sft.json
+  --out data/course_sft.json
+```
+
+如果只想抽取某些文件，可以加 `--name-regex`：
+
+```bash
+python scripts/course_tune_build_data.py \
+  --source "/path/to/your/course/materials" \
+  --name-regex "Lecture|Topic|Week" \
+  --mode sft_dataset \
+  --out data/course_sft.json
 ```
 
 ### 训练
 
 ```bash
 llamafactory-cli train examples/train_lora/qwen3_course_sft.yaml
-llamafactory-cli train examples/train_lora/qwen3_course_dpo.yaml
 ```
 
 ### 启动模型 API 和测试页面
@@ -76,44 +86,40 @@ python web/server.py --port 7860
 
 ```bash
 python scripts/course_tune_build_data.py \
-  --source "/Users/gumishdo/Desktop/大三下/产开" \
-  --name-regex "^(EBU5606 - Topic|EBU5606_Topic 11|Product Development)" \
+  --source "/path/to/your/course/materials" \
   --mode chunks \
-  --out data/course_product_development_chunks.jsonl
+  --out data/course_chunks.jsonl
 ```
-
-本地已生成 `948` 个 source chunks、`948` 条 SFT 标注提示词、`948` 条 DPO 标注提示词、`1996` 条 SFT 训练样本和 `948` 条 DPO 偏好样本。SFT 训练集由 `1896` 条自动抽取样本加 `5` 条人工校验样本重复 `20` 次组成。包含课程原文的生成文件已加入 `.gitignore`。
 
 ### 生成 SFT 训练集
 
 ```bash
 python scripts/course_tune_build_data.py \
-  --source "/Users/gumishdo/Desktop/大三下/产开" \
-  --name-regex "^(EBU5606 - Topic|EBU5606_Topic 11|Product Development)" \
+  --source "/path/to/your/course/materials" \
   --mode sft_dataset \
-  --seed-json data/course_product_development_sft_sample.json \
+  --seed-json data/course_sft_sample.json \
   --seed-repeat 20 \
-  --out data/course_product_development_sft.json
+  --out data/course_sft.json
 ```
+
+`data/course_sft_sample.json` 是人工校验样本模板。你可以替换成自己课程的高质量问答样本；如果暂时没有人工样本，可以去掉 `--seed-json` 和 `--seed-repeat`。
 
 ### 生成 DPO 标注提示词
 
 ```bash
 python scripts/course_tune_build_data.py \
-  --source "/Users/gumishdo/Desktop/大三下/产开" \
-  --name-regex "^(EBU5606 - Topic|EBU5606_Topic 11|Product Development)" \
+  --source "/path/to/your/course/materials" \
   --mode dpo_prompts \
-  --out data/course_product_development_dpo_prompts.jsonl
+  --out data/course_dpo_prompts.jsonl
 ```
 
 ### 生成 DPO 训练集
 
 ```bash
 python scripts/course_tune_build_data.py \
-  --source "/Users/gumishdo/Desktop/大三下/产开" \
-  --name-regex "^(EBU5606 - Topic|EBU5606_Topic 11|Product Development)" \
+  --source "/path/to/your/course/materials" \
   --mode dpo_dataset \
-  --out data/course_product_development_dpo.json
+  --out data/course_dpo.json
 ```
 
 ### 合并 LoRA
@@ -124,11 +130,11 @@ llamafactory-cli export examples/merge_lora/qwen3_course_lora.yaml
 
 ## 页面展示
 
-中文测试页面位于 `web/index.html`，通过 `web/server.py` 代理到本地模型 API。
+中文测试页面位于 `web/index.html`，通过 `web/server.py` 代理到本地模型 API。下图使用已导入的产品开发课件做示例问答；把 `--source` 替换成你自己的课程资料路径后，也可以用于其他课程。
 
 ![CourseTune 中文测试页面](docs/course-assistant-ui.png)
 
-## 训练结果
+## 示例训练记录
 
 | 项目 | 结果 |
 |---|---|
@@ -140,38 +146,31 @@ llamafactory-cli export examples/merge_lora/qwen3_course_lora.yaml
 | 训练步数 | `250` optimization steps |
 | 训练耗时 | `11m47s` |
 | 最终 train loss | `0.8136` |
-| 本地权重路径 | `saves/qwen3-4b-product-development/lora/sft` |
+| 本地权重路径 | `saves/qwen3-4b-course-assistant/lora/sft` |
 
-验证问题：
-
-```text
-列出 generic product development process 的六个阶段。
-```
-
-模型返回了课程中的六个阶段：`Planning`、`Concept development`、`System-level design`、`Detail design`、`Testing and refinement`、`Production ramp-up`。前端代理 `/api/chat` 已通过同一问题验证。
+这是一组示例训练记录，用来展示单卡训练成本和项目完成度。实际样本数、loss 和训练时间会随你的课程资料数量、数据质量和训练参数变化。
 
 ## 架构
 
 ```mermaid
 graph TD
-    A[EBU5606 课件 PDF] --> B[course_tune_build_data.py]
+    A[课程资料 PDF/PPTX/TXT/Markdown] --> B[course_tune_build_data.py]
     B --> C[Source Chunks JSONL]
     C --> D[SFT 数据集]
     C --> E[DPO 数据集]
     D --> F[LLaMA-Factory SFT]
     E --> G[LLaMA-Factory DPO]
-    F --> H[LLaMA-Factory 训练]
+    F --> H[课程 LoRA Adapter]
     G --> H
-    H --> I[课程 LoRA Adapter]
-    I --> J[Chat / Export]
+    H --> I[Chat API / Web UI / Export]
 ```
 
 ## 项目结构
 
 ```text
 data/
-├── course_product_development_sft_sample.json
-├── course_product_development_dpo_sample.json
+├── course_sft_sample.json
+├── course_dpo_sample.json
 └── dataset_info.json
 docs/
 └── course-assistant-ui.png

@@ -2,12 +2,12 @@
 
 ### model
 model_name_or_path: Qwen/Qwen3-4B-Instruct-2507
-adapter_name_or_path: saves/qwen3-4b-product-development/lora/sft
+adapter_name_or_path: saves/qwen3-4b-course-assistant/lora/sft
 template: qwen3_nothink
 trust_remote_code: true
 
 ### export
-export_dir: saves/qwen3_product_development_merged
+export_dir: saves/qwen3_course_assistant_merged
 export_size: 5
 export_device: cpu
 export_legacy_format: false

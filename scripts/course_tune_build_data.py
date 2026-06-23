@@ -12,7 +12,7 @@ from pathlib import Path
 
 
 SUPPORTED_SUFFIXES = {".pdf", ".pptx", ".txt", ".md"}
-SYSTEM_PROMPT = "你是 EBU5606 产品开发课程资料智能答疑助手。只根据课程资料回答；如果资料不足，就说明无法从资料中确定。"
+SYSTEM_PROMPT = "你是课程资料智能答疑助手。只根据用户提供的课程资料回答；如果资料不足，就说明无法从资料中确定。"
 
 
 def main() -> int:
@@ -181,14 +181,14 @@ def build_sft_rows(chunk: dict[str, str]) -> list[dict[str, object]]:
     source = f"{chunk['source_name']} {chunk['locator']}"
     return [
         {
-            "instruction": f"根据 EBU5606 课程资料，解释「{topic}」这部分内容。",
+            "instruction": f"根据课程资料，解释「{topic}」这部分内容。",
             "input": "",
             "output": answer,
             "system": SYSTEM_PROMPT,
             "source_files": [chunk["source_name"]],
         },
         {
-            "instruction": "请把下面这段 EBU5606 课程资料整理成中文复习笔记。",
+            "instruction": "请把下面这段课程资料整理成中文复习笔记。",
             "input": f"来源：{source}\n\n资料：\n{chunk['text']}",
             "output": answer,
             "system": SYSTEM_PROMPT,
@@ -206,7 +206,7 @@ def build_dpo_rows(chunk: dict[str, str]) -> list[dict[str, object]]:
     )
     return [
         {
-            "instruction": f"根据 EBU5606 课程资料，解释「{topic}」这部分内容。",
+            "instruction": f"根据课程资料，解释「{topic}」这部分内容。",
             "input": "",
             "chosen": chosen,
             "rejected": rejected,
@@ -245,7 +245,6 @@ def topic_hint(text: str, source_name: str, max_chars: int = 48) -> str:
         if len(cleaned) >= 4 and not is_generic_heading(cleaned):
             return cleaned[:max_chars]
     source_topic = re.sub(r"\.[^.]+$", "", source_name)
-    source_topic = re.sub(r"^EBU5606\s*[-_]\s*", "", source_topic, flags=re.IGNORECASE)
     source_topic = re.sub(r"_?2026$", "", source_topic)
     source_topic = re.sub(r"\s+", " ", source_topic).strip(" -_")
     return source_topic[:max_chars] or "课程知识点"
@@ -254,10 +253,11 @@ def topic_hint(text: str, source_name: str, max_chars: int = 48) -> str:
 def is_generic_heading(text: str) -> bool:
     normalized = text.lower().strip()
     generic = {
-        "ebu5606",
-        "product development",
-        "product development and marketing",
-        "queen mary university of london",
+        "course code",
+        "module code",
+        "course title",
+        "lecture title",
+        "module overview",
     }
     return normalized in generic or normalized.startswith("slide ")
 

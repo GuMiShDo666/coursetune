@@ -11,7 +11,7 @@ lora_target: all
 
 ### dataset
 dataset_dir: data
-dataset: course_product_development_sft
+dataset: course_sft
 template: qwen3_nothink
 cutoff_len: 2048
 max_samples: 2000
@@ -19,7 +19,7 @@ preprocessing_num_workers: 8
 dataloader_num_workers: 2
 
 ### output
-output_dir: saves/qwen3-4b-product-development/lora/sft
+output_dir: saves/qwen3-4b-course-assistant/lora/sft
 logging_steps: 10
 save_steps: 200
 save_total_limit: 2
@@ -41,7 +41,7 @@ ddp_timeout: 180000000
 resume_from_checkpoint: null
 
 ### eval
-# eval_dataset: course_product_development_sft
+# eval_dataset: course_sft
 # val_size: 0.1
 # per_device_eval_batch_size: 1
 # eval_strategy: steps

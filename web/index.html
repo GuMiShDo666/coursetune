@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CourseTune 产品开发课程助手</title>
+  <title>CourseTune 课程资料助手</title>
   <style>
     :root {
       color-scheme: light;
@@ -309,7 +309,7 @@
         <div class="mark">CT</div>
         <div>
           <h1>CourseTune</h1>
-          <div class="subtitle">EBU5606 产品开发课程助手</div>
+          <div class="subtitle">自定义课程资料问答助手</div>
         </div>
       </div>
 
@@ -324,10 +324,10 @@
       <section>
         <p class="section-title">常用问题</p>
         <div class="templates">
-          <button class="template" data-question="请解释 New Product Development 在课程中的含义。">解释 NPD</button>
-          <button class="template" data-question="列出 generic product development process 的六个阶段。">开发流程阶段</button>
-          <button class="template" data-question="Real-Win-Worth-it 方法关注哪三个问题？">RWW 方法</button>
-          <button class="template" data-question="请比较 concept screening 和 concept scoring。">概念筛选对比</button>
+          <button class="template" data-question="请总结这部分课程资料的核心概念。">核心概念</button>
+          <button class="template" data-question="请列出课程资料中的关键步骤或阶段。">步骤阶段</button>
+          <button class="template" data-question="请根据课程资料整理一份中文复习笔记。">复习笔记</button>
+          <button class="template" data-question="请指出这部分内容中容易混淆的概念。">易混淆点</button>
         </div>
       </section>
     </aside>
@@ -336,7 +336,7 @@
       <div class="toolbar">
         <div>
           <h2>课程问答测试台</h2>
-          <div class="meta">Qwen3-4B LoRA · Product Development</div>
+          <div class="meta">Qwen3-4B LoRA · Course Assistant</div>
         </div>
         <div class="controls">
           <select id="temperature" aria-label="温度">
@@ -351,12 +351,12 @@
       <div class="chat" id="chat">
         <div class="message assistant">
           <div class="role">课程助手</div>
-          <div class="bubble">请输入 EBU5606 产品开发课程问题。</div>
+          <div class="bubble">请输入你的课程资料相关问题。</div>
         </div>
       </div>
 
       <form class="composer" id="chatForm">
-        <textarea id="prompt" placeholder="输入你的课程问题，例如：产品机会识别有哪些步骤？"></textarea>
+        <textarea id="prompt" placeholder="输入你的课程问题，例如：请总结本讲的核心知识点。"></textarea>
         <button class="primary send" type="submit">发送</button>
       </form>
     </main>
@@ -373,7 +373,7 @@
     const messages = [
       {
         role: "system",
-        content: "你是 EBU5606 产品开发课程资料智能答疑助手。只根据课程资料回答；如果资料不足，就说明无法从资料中确定。"
+        content: "你是课程资料智能答疑助手。只根据用户提供的课程资料回答；如果资料不足，就说明无法从资料中确定。"
       }
     ];
 
@@ -440,7 +440,7 @@
     document.querySelector("#clearBtn").addEventListener("click", () => {
       messages.splice(1);
       chat.innerHTML = "";
-      addMessage("assistant", "请输入 EBU5606 产品开发课程问题。");
+      addMessage("assistant", "请输入你的课程资料相关问题。");
     });
 
     document.querySelectorAll(".template").forEach((button) => {
